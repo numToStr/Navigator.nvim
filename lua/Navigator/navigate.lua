@@ -1,6 +1,7 @@
 local tmux = require("Navigator.tmux")
 local api = vim.api
 local cmd = api.nvim_command
+local exec = api.nvim_exec
 
 local N = {}
 
@@ -28,13 +29,21 @@ function N:setup(opts)
     local c = self.config
 
     self.config = opts and vim.tbl_extend("keep", opts, c) or c
-end
 
--- let s:tmux_is_last_pane = 0
--- augroup tmux_navigator
---   au!
---   autocmd WinEnter * let s:tmux_is_last_pane = 0
--- augroup END
+    function ResetLastPane()
+        self.last_pane = false
+    end
+
+    exec(
+        [[
+            augroup NavigatorGroup
+              au!
+              autocmd WinEnter * lua ResetLastPane()
+            augroup END
+        ]],
+        false
+    )
+end
 
 function N:back_to_tmux(at_edge)
     if self.config.disable_on_zoom and tmux.is_zoomed() then
@@ -56,8 +65,11 @@ function N:navigate(direction)
 
     -- window id before navigation
     local cur_win = api.nvim_get_current_win()
+    local tmux_last_pane = direction == "p" and self.last_pane
 
-    wincmd(direction)
+    if not tmux_last_pane then
+        wincmd(direction)
+    end
 
     -- window id after navigation
     local new_win = api.nvim_get_current_win()
@@ -68,7 +80,7 @@ function N:navigate(direction)
     -- then we can assume that we hit the edge
     -- there is tmux pane besided the edge
     -- So we can navigate to the tmux pane
-    if at_edge then
+    if self:back_to_tmux(at_edge) then
         local ok = tmux.change_pane(direction)
 
         local w = self.config.auto_save
