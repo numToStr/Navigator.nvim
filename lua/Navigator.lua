@@ -22,4 +22,8 @@ function Navigator.down()
     n:navigate("j")
 end
 
+function Navigator.previous()
+    n:navigate("p")
+end
+
 return Navigator
