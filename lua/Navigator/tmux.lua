@@ -24,8 +24,9 @@ end
 function T.execute(arg)
     local t_cmd = string.format("tmux -S %s %s", T.get_socket(), arg)
 
-    local handle = io.popen(t_cmd)
+    local handle = assert(io.popen(t_cmd), string.format("Navigator: Unable to execute > [%s]", t_cmd))
     local result = handle:read("l")
+
     handle:close()
 
     return result
