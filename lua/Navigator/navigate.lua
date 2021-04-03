@@ -34,7 +34,7 @@ end
 function N:navigate(direction)
     -- For moments when you have this plugin installed
     -- but for some reason you didn't bother to install tmux
-    if not tmux.is_tmux() then
+    if not tmux.is_tmux then
         wincmd(direction)
 
         return

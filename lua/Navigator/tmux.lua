@@ -12,9 +12,7 @@ local tmux_directions = {
 }
 
 -- Do we really using tmux
-function T.is_tmux()
-    return TMUX ~= nil
-end
+T.is_tmux = TMUX ~= nil
 
 -- For getting tmux socket
 function T.get_socket()
