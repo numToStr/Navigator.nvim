@@ -30,6 +30,12 @@ function N:setup(opts)
     self.config = opts and vim.tbl_extend("keep", opts, c) or c
 end
 
+-- let s:tmux_is_last_pane = 0
+-- augroup tmux_navigator
+--   au!
+--   autocmd WinEnter * let s:tmux_is_last_pane = 0
+-- augroup END
+
 function N:back_to_tmux(at_edge)
     if self.config.disable_on_zoom and tmux.is_zoomed() then
         return false
