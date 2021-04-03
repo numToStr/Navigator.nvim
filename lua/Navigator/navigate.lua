@@ -30,6 +30,14 @@ function N:setup(opts)
     self.config = opts and vim.tbl_extend("keep", opts, c) or c
 end
 
+function N:back_to_tmux(at_edge)
+    if self.config.disable_on_zoom and tmux.is_zoomed() then
+        return false
+    end
+
+    return self.last_pane or at_edge
+end
+
 -- For smoothly navigating through neovim splits and tmux panes
 function N:navigate(direction)
     -- For moments when you have this plugin installed
@@ -68,7 +76,10 @@ function N:navigate(direction)
                 cmd("wall")
             end
         end
+
+        self.last_pane = true
     else
+        self.last_pane = false
     end
 end
 
