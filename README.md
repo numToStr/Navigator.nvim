@@ -78,4 +78,4 @@ map('n', "<A-p>", "<CMD>lua require('Navigator').previous()<CR>", opts)
 
 ### Credits
 
-[vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator)
+This plugin is a port of [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator) in lua. So, all the credit goes to it.
