@@ -6,13 +6,13 @@
 
 <!-- <p align='center'><a href="https://user-images.githubusercontent.com/24727447/113504213-4dccf000-9554-11eb-8dcb-43d13e20be59.mp4" target="_blank" >Source</a></p> -->
 
-<!-- > Note: This plugin is a lua port of famous vim-tmux-navigator -->
-
 ### Requirements
 
 -   Neovim Nightly (0.5)
 
 ### Installation
+
+#### Neovim
 
 -   With [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
@@ -26,6 +26,12 @@ use {
 }
 
 ```
+
+#### Tmux
+
+This plugin doesn't provides any configuration for `tmux`. You can read [here](https://github.com/christoomey/vim-tmux-navigator#tmux) to how to setup your tmux.
+
+Or, you can use [tmux-tilish](https://github.com/jabirali/tmux-tilish) which is an excellent tmux plugin.
 
 ### Configuration
 
