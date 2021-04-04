@@ -49,7 +49,7 @@ This plugin doesn't comes with any default keybinding but rather gives you the f
 
 -   `require('Navigator.nvim').down()` - Go down to split or pane
 
--   `require('Navigator.nvim').previous()` - Move to previous split or pane
+-   `require('Navigator.nvim').previous()` - Go to previous split or pane
 
 ### Setup
 
@@ -65,11 +65,11 @@ require('Navigator.nvim').setup({
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
-map('n', "<A-h>", "require('Navigator.nvim').left()", opts)
-map('n', "<A-k>", "require('Navigator.nvim').up()", opts)
-map('n', "<A-l>", "require('Navigator.nvim').right()", opts)
-map('n', "<A-j>", "require('Navigator.nvim').down()", opts)
-map('n', "<A-p>", "require('Navigator.nvim').previous()", opts)
+map('n', "<A-h>", "<CMD>lua require('Navigator.nvim').left()<CR>", opts)
+map('n', "<A-k>", "<CMD>lua require('Navigator.nvim').up()<CR>", opts)
+map('n', "<A-l>", "<CMD>lua require('Navigator.nvim').right()<CR>", opts)
+map('n', "<A-j>", "<CMD>lua require('Navigator.nvim').down()<CR>", opts)
+map('n', "<A-p>", "<CMD>lua require('Navigator.nvim').previous()<CR>", opts)
 ```
 
 ### Credits
