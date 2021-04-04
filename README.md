@@ -1,8 +1,12 @@
 <h1 align='center'>Navigator.nvim</h1>
 
-<h4 align='center'>Smoothly navigate between splits and panes</h4>
+<h4 align='center'>✨ Smoothly navigate between splits and panes ✨</h4>
 
-> Note: This plugin is a lua port of famous vim-tmux-navigator
+![Navigator](https://user-images.githubusercontent.com/24727447/113504572-92f22180-9556-11eb-963a-218e17c13704.gif "Navigator navigating to the moon")
+
+<!-- <p align='center'><a href="https://user-images.githubusercontent.com/24727447/113504213-4dccf000-9554-11eb-8dcb-43d13e20be59.mp4" target="_blank" >Source</a></p> -->
+
+<!-- > Note: This plugin is a lua port of famous vim-tmux-navigator -->
 
 ### Requirements
 
