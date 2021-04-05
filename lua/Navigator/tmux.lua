@@ -34,10 +34,9 @@ end
 
 -- For execting `tmux select-pane` command
 function T.change_pane(direction)
-    local arg = string.format("select-pane -t '%s' -%s; echo $?;", TMUX_PANE, tmux_directions[direction])
+    local arg = string.format("select-pane -t '%s' -%s", TMUX_PANE, tmux_directions[direction])
 
-    -- If result is 0 then it succeeds
-    return T.execute(arg) == "0"
+    T.execute(arg)
 end
 
 function T.is_zoomed()

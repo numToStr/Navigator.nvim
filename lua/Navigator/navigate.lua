@@ -81,11 +81,11 @@ function N:navigate(direction)
     -- there is tmux pane besided the edge
     -- So we can navigate to the tmux pane
     if self:back_to_tmux(at_edge) then
-        local ok = tmux.change_pane(direction)
+        tmux.change_pane(direction)
 
         local w = self.config.auto_save
 
-        if w ~= nil and ok then
+        if w ~= nil then
             if w == "current" then
                 cmd("update")
             end
