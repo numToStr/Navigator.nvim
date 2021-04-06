@@ -26,9 +26,9 @@ end
 
 -- For setting up the plugin with the user provided options
 function N:setup(opts)
-    local c = self.config
-
-    self.config = opts and vim.tbl_extend("keep", opts, c) or c
+    if opts ~= nil then
+        self.config = vim.tbl_extend("keep", opts, self.config)
+    end
 
     function _G.__navigator_reset_last_pane()
         self.last_pane = false
