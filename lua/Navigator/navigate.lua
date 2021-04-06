@@ -30,7 +30,7 @@ function N:setup(opts)
 
     self.config = opts and vim.tbl_extend("keep", opts, c) or c
 
-    function ResetLastPane()
+    function _G.__navigator_reset_last_pane()
         self.last_pane = false
     end
 
@@ -38,7 +38,7 @@ function N:setup(opts)
         [[
             augroup NavigatorGroup
               au!
-              autocmd WinEnter * lua ResetLastPane()
+              autocmd WinEnter * lua __navigator_reset_last_pane()
             augroup END
         ]],
         false
