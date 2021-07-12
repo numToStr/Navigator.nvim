@@ -1,4 +1,4 @@
-local tmux = require("Navigator.tmux")
+local tmux = require('Navigator.tmux')
 local api = vim.api
 local cmd = api.nvim_command
 local exec = api.nvim_exec
@@ -6,7 +6,7 @@ local exec = api.nvim_exec
 local N = {}
 
 local function wincmd(direction)
-    cmd("wincmd " .. direction)
+    cmd('wincmd ' .. direction)
 end
 
 -- Just some state and defaults
@@ -15,8 +15,8 @@ function N:new()
         last_pane = false,
         config = {
             disable_on_zoom = false, -- boolean
-            auto_save = nil -- 'current' | 'all'
-        }
+            auto_save = nil, -- 'current' | 'all'
+        },
     }
 
     self.__index = self
@@ -27,7 +27,7 @@ end
 -- For setting up the plugin with the user provided options
 function N:setup(opts)
     if opts ~= nil then
-        self.config = vim.tbl_extend("keep", opts, self.config)
+        self.config = vim.tbl_extend('keep', opts, self.config)
     end
 
     function _G.__navigator_reset_last_pane()
@@ -65,7 +65,7 @@ function N:navigate(direction)
 
     -- window id before navigation
     local cur_win = api.nvim_get_current_win()
-    local tmux_last_pane = direction == "p" and self.last_pane
+    local tmux_last_pane = direction == 'p' and self.last_pane
 
     if not tmux_last_pane then
         wincmd(direction)
@@ -86,12 +86,12 @@ function N:navigate(direction)
         local w = self.config.auto_save
 
         if w ~= nil then
-            if w == "current" then
-                cmd("update")
+            if w == 'current' then
+                cmd('update')
             end
 
-            if w == "all" then
-                cmd("wall")
+            if w == 'all' then
+                cmd('wall')
             end
         end
 
