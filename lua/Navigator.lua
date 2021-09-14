@@ -1,29 +1,27 @@
 local n = require('Navigator.navigate')
 
-local Navigator = {}
+local N = {
+    setup = n.setup,
+}
 
-function Navigator.setup(opts)
-    n:setup(opts)
+function N.left()
+    n.navigate('h')
 end
 
-function Navigator.left()
-    n:navigate('h')
+function N.up()
+    n.navigate('k')
 end
 
-function Navigator.up()
-    n:navigate('k')
+function N.right()
+    n.navigate('l')
 end
 
-function Navigator.right()
-    n:navigate('l')
+function N.down()
+    n.navigate('j')
 end
 
-function Navigator.down()
-    n:navigate('j')
+function N.previous()
+    n.navigate('p')
 end
 
-function Navigator.previous()
-    n:navigate('p')
-end
-
-return Navigator
+return N
