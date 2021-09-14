@@ -1,7 +1,6 @@
 local tmux = require('Navigator.tmux')
 local api = vim.api
 local cmd = api.nvim_command
-local exec = api.nvim_exec
 
 local N = {}
 
@@ -34,15 +33,12 @@ function N:setup(opts)
         self.last_pane = false
     end
 
-    exec(
-        [[
-            augroup NavigatorGroup
-              au!
-              autocmd WinEnter * lua __navigator_reset_last_pane()
-            augroup END
-        ]],
-        false
-    )
+    vim.cmd([[
+        augroup NavigatorGroup
+            au!
+            autocmd WinEnter * lua __navigator_reset_last_pane()
+        augroup END
+    ]])
 end
 
 function N:back_to_tmux(at_edge)
