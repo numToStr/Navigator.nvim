@@ -33,43 +33,11 @@ This plugin doesn't provides any configuration for `tmux`. You can read [here](h
 
 Or, you can use [tmux-tilish](https://github.com/jabirali/tmux-tilish) which is an excellent tmux plugin.
 
-### Configuration
-
-This plugin provides the following configuration which can be given when calling `setup()`.
-
--   `auto_save`: When you want to save the modified buffers when moving to tmux
-
-    Values:
-
-    -   `nil` - Don't save (default)
-    -   `current` - Only save the current modified buffer
-    -   `all` - Save all the buffers
-
--   `disable_on_zoom`: Disable navigation when tmux is zoomed in (`false` by default)
-
-### Commands
-
-This plugin doesn't comes with any default keybinding but rather gives you the flexibility to setup your own keybindings with the provided functions
-
--   `require('Navigator').left()` - Go left to split or pane
-
--   `require('Navigator').up()` - Go up to split or pane
-
--   `require('Navigator').right()` - Go right to split or pane
-
--   `require('Navigator').down()` - Go down to split or pane
-
--   `require('Navigator').previous()` - Go to previous split or pane
-
 ### Setup
 
 ```lua
-
 -- Configuration
-require('Navigator').setup({
-    auto_save = 'current',
-    disable_on_zoom = true
-})
+require('Navigator').setup()
 
 -- Keybindings
 local map = vim.api.nvim_set_keymap
@@ -82,6 +50,57 @@ map('n', "<A-j>", "<CMD>lua require('Navigator').down()<CR>", opts)
 map('n', "<A-p>", "<CMD>lua require('Navigator').previous()<CR>", opts)
 ```
 
+#### Configuration
+
+Following options can be given when calling `setup({config})`. Below is the default configuration
+
+```lua
+{
+    -- When you want to save the modified buffers when moving to tmux
+    -- `nil` - Don't save (default)
+    -- `current` - Only save the current modified buffer
+    -- `all` - Save all the buffers
+    auto_save = nil,
+
+    -- Disable navigation when tmux is zoomed in
+    disable_on_zoom = false
+}
+```
+
+### Usage
+
+> This plugin doesn't comes with any default keybinding but rather gives you the flexibility to setup your own keybindings with the provided functions
+
+-   Go to left split or pane
+
+```lua
+lua require('Navigator').left()
+```
+
+-   Go to upper split or pane
+
+```lua
+lua require('Navigator').up()
+```
+
+-   Go to right split or pane
+
+```lua
+lua require('Navigator').right()
+```
+
+-   Go to down split or pane
+
+```lua
+lua require('Navigator').down()
+```
+
+-   Go to previous split or pane
+
+```lua
+lua require('Navigator').previous()
+```
+
 ### Credits
 
-This plugin is a port of [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator) in lua. So, all the credit goes to it.
+This plugin is a port of [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator) in lua.
