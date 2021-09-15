@@ -5,10 +5,7 @@ local cmd = api.nvim_command
 -- Just some state and defaults
 local N = {
     last_pane = false,
-    config = {
-        disable_on_zoom = false, -- boolean
-        auto_save = nil, -- 'current' | 'all'
-    },
+    config = nil,
 }
 
 local function wincmd(direction)
@@ -17,9 +14,10 @@ end
 
 -- For setting up the plugin with the user provided options
 function N.setup(opts)
-    if opts ~= nil then
-        N.config = vim.tbl_extend('keep', opts, N.config)
-    end
+    N.config = vim.tbl_extend('keep', opts or {}, {
+        disable_on_zoom = false, -- boolean
+        auto_save = nil, -- 'current' | 'all'
+    })
 
     function _G.__navigator_reset_last_pane()
         N.last_pane = false
