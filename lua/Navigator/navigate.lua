@@ -1,6 +1,6 @@
 local tmux = require('Navigator.tmux')
-local api = vim.api
-local cmd = api.nvim_command
+local A = vim.api
+local cmd = A.nvim_command
 
 -- Just some state and defaults
 local N = {
@@ -14,10 +14,14 @@ end
 
 -- For setting up the plugin with the user provided options
 function N.setup(opts)
-    N.config = vim.tbl_extend('keep', opts or {}, {
+    N.config = {
         disable_on_zoom = false, -- boolean
         auto_save = nil, -- 'current' | 'all'
-    })
+    }
+
+    if opts ~= nil then
+        vim.tbl_extend('keep', opts, N.config)
+    end
 
     function _G.__navigator_reset_last_pane()
         N.last_pane = false
@@ -50,7 +54,7 @@ function N.navigate(direction)
     end
 
     -- window id before navigation
-    local cur_win = api.nvim_get_current_win()
+    local cur_win = A.nvim_get_current_win()
     local tmux_last_pane = direction == 'p' and N.last_pane
 
     if not tmux_last_pane then
@@ -58,7 +62,7 @@ function N.navigate(direction)
     end
 
     -- window id after navigation
-    local new_win = api.nvim_get_current_win()
+    local new_win = A.nvim_get_current_win()
 
     -- After navigation, if the old window and new window matches
     local at_edge = cur_win == new_win
