@@ -20,7 +20,7 @@ function N.setup(opts)
     }
 
     if opts ~= nil then
-        vim.tbl_extend('keep', opts, N.config)
+        N.config = vim.tbl_extend('keep', opts, N.config)
     end
 
     function _G.__navigator_reset_last_pane()
