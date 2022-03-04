@@ -2,21 +2,29 @@ local tmux = require('Navigator.tmux')
 local A = vim.api
 local cmd = A.nvim_command
 
--- Just some state and defaults
+---@class Config
+---@field auto_save '"current"'|'"all"' When you want to save the modified buffers when moving to tmux
+---@field disable_on_zoom boolean Disable navigation when tmux is zoomed in
+
+---Just some state and defaults
+---@class Nav
+---@field last_pane boolean
+---@field config Config
 local N = {
     last_pane = false,
     config = nil,
 }
 
-local function wincmd(direction)
-    cmd('wincmd ' .. direction)
+local function wincmd(way)
+    cmd(('wincmd %s'):format(way))
 end
 
--- For setting up the plugin with the user provided options
+---For setting up the plugin with the user provided options
+---@param opts Config
 function N.setup(opts)
     N.config = {
-        disable_on_zoom = false, -- boolean
-        auto_save = nil, -- 'current' | 'all'
+        disable_on_zoom = false,
+        auto_save = nil,
     }
 
     if opts ~= nil then
@@ -35,6 +43,9 @@ function N.setup(opts)
     ]])
 end
 
+---Checks whether we need to move to the nearby tmux pane
+---@param at_edge boolean
+---@return boolean
 function N.back_to_tmux(at_edge)
     if N.config.disable_on_zoom and tmux.is_zoomed() then
         return false
@@ -43,14 +54,13 @@ function N.back_to_tmux(at_edge)
     return N.last_pane or at_edge
 end
 
--- For smoothly navigating through neovim splits and tmux panes
+---For smoothly navigating through neovim splits and tmux panes
+---@param direction string
 function N.navigate(direction)
     -- For moments when you have this plugin installed
     -- but for some reason you didn't bother to install tmux
     if not tmux.is_tmux then
-        wincmd(direction)
-
-        return
+        return wincmd(direction)
     end
 
     -- window id before navigation
@@ -61,11 +71,8 @@ function N.navigate(direction)
         wincmd(direction)
     end
 
-    -- window id after navigation
-    local new_win = A.nvim_get_current_win()
-
     -- After navigation, if the old window and new window matches
-    local at_edge = cur_win == new_win
+    local at_edge = cur_win == A.nvim_get_current_win()
 
     -- then we can assume that we hit the edge
     -- there is tmux pane besided the edge
@@ -73,16 +80,12 @@ function N.navigate(direction)
     if N.back_to_tmux(at_edge) then
         tmux.change_pane(direction)
 
-        local w = N.config.auto_save
+        local save = N.config.auto_save
 
-        if w ~= nil then
-            if w == 'current' then
-                cmd('update')
-            end
-
-            if w == 'all' then
-                cmd('wall')
-            end
+        if save == 'current' then
+            cmd('update')
+        elseif save == 'all' then
+            cmd('wall')
         end
 
         N.last_pane = true

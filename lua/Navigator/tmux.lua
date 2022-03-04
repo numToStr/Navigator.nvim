@@ -11,18 +11,21 @@ local tmux_directions = {
     j = 'D',
 }
 
--- Do we really using tmux
+---Are we really using tmux
 T.is_tmux = TMUX ~= nil
 
--- For getting tmux socket
-function T.get_socket()
+---For getting tmux socket
+---@return string
+local function get_socket()
     -- The socket path is the first value in the comma-separated list of $TMUX.
     return vim.split(TMUX, ',')[1]
 end
 
--- For executing a tmux command
-function T.execute(arg)
-    local t_cmd = string.format('tmux -S %s %s', T.get_socket(), arg)
+---For executing a tmux command
+---@param arg string Tmux command to run
+---@return number
+local function execute(arg)
+    local t_cmd = string.format('tmux -S %s %s', get_socket(), arg)
 
     local handle = assert(io.popen(t_cmd), string.format('Navigator: Unable to execute > [%s]', t_cmd))
     local result = handle:read()
@@ -32,16 +35,17 @@ function T.execute(arg)
     return result
 end
 
--- For execting `tmux select-pane` command
+---For execting `tmux select-pane` command
+---@param direction string
 function T.change_pane(direction)
-    local arg = string.format("select-pane -t '%s' -%s", TMUX_PANE, tmux_directions[direction])
-
-    T.execute(arg)
+    return execute(string.format("select-pane -t '%s' -%s", TMUX_PANE, tmux_directions[direction]))
 end
 
+---To check whether the tmux pane is zoomed
+---@return boolean
 function T.is_zoomed()
     -- if result is 1 then tmux pane is zoomed
-    return T.execute("display-message -p '#{window_zoomed_flag}'") == '1'
+    return execute("display-message -p '#{window_zoomed_flag}'") == '1'
 end
 
 return T
