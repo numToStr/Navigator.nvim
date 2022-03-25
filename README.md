@@ -40,11 +40,11 @@ Or, you can use [tmux-tilish](https://github.com/jabirali/tmux-tilish) which is 
 require('Navigator').setup()
 
 -- Keybindings
-vim.keymap.set('n', "<A-h>", require('Navigator').left)
-vim.keymap.set('n', "<A-k>", require('Navigator').up)
-vim.keymap.set('n', "<A-l>", require('Navigator').right)
-vim.keymap.set('n', "<A-j>", require('Navigator').down)
-vim.keymap.set('n', "<A-p>", require('Navigator').previous)
+vim.keymap.set('n', "<A-h>", '<CMD>NavigatorLeft<CR>')
+vim.keymap.set('n', "<A-l>", '<CMD>NavigatorRight<CR>')
+vim.keymap.set('n', "<A-k>", '<CMD>NavigatorUp<CR>')
+vim.keymap.set('n', "<A-j>", '<CMD>NavigatorDown<CR>')
+vim.keymap.set('n', "<A-p>", '<CMD>NavigatorPrevious<CR>')
 ```
 
 #### Configuration (optional)
@@ -66,37 +66,29 @@ Following options can be given when calling `setup({config})`. Below is the defa
 
 ### 🔥 Usage
 
-Following are the functions that are exported as part of the lua API.
+#### Commands
 
-> NOTE: This plugin doesn't creates default keybinding or commands
+- `NavigatorLeft` - Go to left split/pane
 
-- Go to left split/pane
+- `NavigatorRight` - Go to right split/pane
+
+- `NavigatorUp` - Go to upper split/pane
+
+- `NavigatorDown` - Go to down split/pane
+
+- `NavigatorPrevious` - Go to previous split/pane
+
+#### Lua API
 
 ```lua
 require('Navigator').left()
-```
 
-- Go to upper split/pane
-
-```lua
-require('Navigator').up()
-```
-
-- Go to right split/pane
-
-```lua
 require('Navigator').right()
-```
 
-- Go to down split/pane
+require('Navigator').up()
 
-```lua
 require('Navigator').down()
-```
 
-- Go to previous split/pane
-
-```lua
 require('Navigator').previous()
 ```
 
