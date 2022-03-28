@@ -31,12 +31,26 @@ function N.setup(opts)
         N.config = vim.tbl_extend('keep', opts, N.config)
     end
 
-    A.nvim_create_autocmd('WinEnter', {
-        group = A.nvim_create_augroup('NAVIGATOR', { clear = true }),
-        callback = function()
+    -- NOTE: remove this after 0.7 release
+    if not A.nvim_create_autocmd then
+        function N.reset()
             N.last_pane = false
-        end,
-    })
+        end
+
+        vim.cmd([[
+            augroup NAVIGATOR
+                au!
+                autocmd WinEnter * lua require("Navigator.navigate").reset()
+            augroup END
+        ]])
+    else
+        A.nvim_create_autocmd('WinEnter', {
+            group = A.nvim_create_augroup('NAVIGATOR', { clear = true }),
+            callback = function()
+                N.last_pane = false
+            end,
+        })
+    end
 end
 
 ---Checks whether we need to move to the nearby tmux pane
