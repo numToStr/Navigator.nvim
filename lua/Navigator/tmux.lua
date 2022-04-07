@@ -48,4 +48,10 @@ function T.is_zoomed()
     return execute("display-message -p '#{window_zoomed_flag}'") == '1'
 end
 
+---To check whether only one tmux pane exists
+---@return boolean
+function T.single_pane()
+    return execute("display-message -p '#{window_panes}'") == '1'
+end
+
 return T

@@ -25,6 +25,7 @@ function N.setup(opts)
     N.config = {
         disable_on_zoom = false,
         auto_save = nil,
+        circular_movement = false,
     }
 
     if opts ~= nil then
@@ -81,9 +82,20 @@ function N.navigate(direction)
         wincmd(direction)
     end
 
-    -- After navigation, if the old window and new window matches
+    -- Check if the old window and new window match after navigation
     local at_edge = cur_win == A.nvim_get_current_win()
 
+    -- If only one tmux pane exists, perform
+    -- 'circular movement' if on an edge
+    if N.config.circular_movement and at_edge and tmux.single_pane() then
+        if direction == 'h' then
+            cmd(vim.fn.winnr('$') .. ' wincmd w')
+        elseif direction == 'l' then
+            cmd('1 wincmd w')
+        end
+    end
+
+    -- If the old window and new window match
     -- then we can assume that we hit the edge
     -- there is tmux pane besided the edge
     -- So we can navigate to the tmux pane

@@ -61,6 +61,9 @@ Following options can be given when calling `setup({config})`. Below is the defa
 
     -- Disable navigation when tmux is zoomed in
     disable_on_zoom = false
+
+    -- Moving left on the left-most nvim pane will move to the last pane and vice versa
+    circular_movement = false
 }
 ```
 
