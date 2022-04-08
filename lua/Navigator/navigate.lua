@@ -84,22 +84,30 @@ function N.navigate(direction)
 
     -- Check if the old window and new window match after navigation
     local at_edge = cur_win == A.nvim_get_current_win()
+    local window_changed = cur_win ~= A.nvim_get_current_win()
 
     -- If only one tmux pane exists, perform
     -- 'circular movement' if on an edge
-    if N.config.circular_movement and at_edge and tmux.single_pane() then
-        if direction == 'h' then
-            cmd(vim.fn.winnr('$') .. ' wincmd w')
-        elseif direction == 'l' then
-            cmd('1 wincmd w')
+    if N.config.circular_movement and at_edge and tmux.single_pane(direction) then
+        local alt_directions = { h = 'l', j = 'k', k = 'j', l = 'h' }
+
+        local at_alt_edge = false
+
+        while not at_alt_edge do
+            local new_cur_win = A.nvim_get_current_win()
+            wincmd(alt_directions[direction])
+            at_alt_edge = new_cur_win == A.nvim_get_current_win()
         end
+
+        -- If the window has changed, don't change tmux pane
+        window_changed = cur_win ~= A.nvim_get_current_win()
     end
 
     -- If the old window and new window match
     -- then we can assume that we hit the edge
     -- there is tmux pane besided the edge
     -- So we can navigate to the tmux pane
-    if N.back_to_tmux(at_edge) then
+    if N.back_to_tmux(at_edge) and not window_changed then
         tmux.change_pane(direction)
 
         local save = N.config.auto_save
