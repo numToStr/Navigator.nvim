@@ -1,4 +1,4 @@
-local ucmd = vim.api.nvim_add_user_command
+local ucmd = vim.api.nvim_create_user_command
 
 -- NOTE: remove this after 0.7 release
 if not ucmd then
