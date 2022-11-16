@@ -21,11 +21,18 @@ local function get_socket()
     return vim.split(TMUX, ',')[1]
 end
 
+---To know if we should talk to tmux or tmate
+---@return string
+local function get_executable_name()
+    -- The $TMUX environment variable contains the name of the executable.
+    return TMUX:find('tmate') and 'tmate' or 'tmux'
+end
+
 ---For executing a tmux command
 ---@param arg string Tmux command to run
 ---@return number
 local function execute(arg)
-    local t_cmd = string.format('tmux -S %s %s', get_socket(), arg)
+    local t_cmd = string.format('%s -S %s %s', get_executable_name(), get_socket(), arg)
 
     local handle = assert(io.popen(t_cmd), string.format('Navigator: Unable to execute > [%s]', t_cmd))
     local result = handle:read()
