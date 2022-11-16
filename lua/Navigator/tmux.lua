@@ -25,7 +25,7 @@ end
 ---@return string
 local function get_executable_name()
     -- The $TMUX environment variable contains the name of the executable.
-    return TMUX:find "tmate" and "tmate" or "tmux"
+    return TMUX:find('tmate') and 'tmate' or 'tmux'
 end
 
 ---For executing a tmux command
