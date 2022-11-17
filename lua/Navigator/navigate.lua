@@ -1,4 +1,4 @@
-local tmux = require('Navigator.tmux')
+local mux = require('Navigator.tmux')
 local A = vim.api
 local cmd = A.nvim_command
 
@@ -25,6 +25,7 @@ function N.setup(opts)
     N.config = {
         disable_on_zoom = false,
         auto_save = nil,
+        mux = "tmux",
     }
 
     if opts ~= nil then
@@ -37,15 +38,15 @@ function N.setup(opts)
             N.last_pane = false
         end,
     })
+
+    if N.config['mux'] == "wezterm" then mux = require('Navigator.wezterm') end
 end
 
 ---Checks whether we need to move to the nearby tmux pane
 ---@param at_edge boolean
 ---@return boolean
 function N.back_to_tmux(at_edge)
-    if N.config.disable_on_zoom and tmux.is_zoomed() then
-        return false
-    end
+    if N.config.disable_on_zoom and mux.is_zoomed() then return false end
 
     return N.last_pane or at_edge
 end
@@ -55,17 +56,13 @@ end
 function N.navigate(direction)
     -- For moments when you have this plugin installed
     -- but for some reason you didn't bother to install tmux
-    if not tmux.is_tmux then
-        return wincmd(direction)
-    end
+    if not mux.is_tmux then return wincmd(direction) end
 
     -- window id before navigation
     local cur_win = A.nvim_get_current_win()
     local tmux_last_pane = direction == 'p' and N.last_pane
 
-    if not tmux_last_pane then
-        wincmd(direction)
-    end
+    if not tmux_last_pane then wincmd(direction) end
 
     -- After navigation, if the old window and new window matches
     local at_edge = cur_win == A.nvim_get_current_win()
@@ -74,7 +71,7 @@ function N.navigate(direction)
     -- there is tmux pane besided the edge
     -- So we can navigate to the tmux pane
     if N.back_to_tmux(at_edge) then
-        tmux.change_pane(direction)
+        mux.change_pane(direction)
 
         local save = N.config.auto_save
 
