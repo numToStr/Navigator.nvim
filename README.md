@@ -27,13 +27,10 @@ Plug 'numToStr/Navigator.nvim'
 lua require('Navigator').setup()
 ```
 
-#### Tmux
 
-This plugin doesn't provides any configuration for `tmux`. You can read [here](https://github.com/christoomey/vim-tmux-navigator#tmux) to how to setup your tmux.
+### ⚒️ Tmux setup
 
-Or, you can use [tmux-tilish](https://github.com/jabirali/tmux-tilish) which is an excellent tmux plugin.
-
-### ⚒️ Setup
+### Neovim
 
 ```lua
 -- Configuration
@@ -45,6 +42,65 @@ vim.keymap.set('n', "<A-l>", '<CMD>NavigatorRight<CR>')
 vim.keymap.set('n', "<A-k>", '<CMD>NavigatorUp<CR>')
 vim.keymap.set('n', "<A-j>", '<CMD>NavigatorDown<CR>')
 vim.keymap.set('n', "<A-p>", '<CMD>NavigatorPrevious<CR>')
+```
+
+#### Tmux
+
+This plugin doesn't provides any configuration for `tmux`. You can read [here](https://github.com/christoomey/vim-tmux-navigator#tmux) to how to setup your tmux.
+
+Or, you can use [tmux-tilish](https://github.com/jabirali/tmux-tilish) which is an excellent tmux plugin.
+
+### ⚒️ Wezterm setup
+
+#### Neovim:
+
+```lua
+-- Configuration
+require('Navigator').setup()
+
+-- Keybindings
+vim.keymap.set('n', "<C-w>h", '<CMD>NavigatorLeft<CR>')
+vim.keymap.set('n', "<C-w>l", '<CMD>NavigatorRight<CR>')
+vim.keymap.set('n', "<C-w>k", '<CMD>NavigatorUp<CR>')
+vim.keymap.set('n', "<C-w>j", '<CMD>NavigatorDown<CR>')
+vim.keymap.set('n', "<C-w>p", '<CMD>NavigatorPrevious<CR>')
+```
+
+#### Wezterm:
+
+```lua
+local function isViProcess(pane)
+    local proc = pane:get_foreground_process_name()
+    if (proc:find('vim') or proc:find('nvim')) then return true end
+    return false
+end
+
+local function conditionalActivatePane(window, pane, pane_direction,
+                                       vim_direction)
+    if (isViProcess(pane)) then
+        window:perform_action(act.Multiple {
+            act.SendKey { key = 'w', mods = 'CTRL' },
+            act.SendKey { key = vim_direction }
+        }, pane)
+    else
+        window:perform_action(act.ActivatePaneDirection(pane_direction),
+            pane)
+    end
+end
+
+wezterm.on('ActivatePaneDirection-right', function(window, pane) conditionalActivatePane(window, pane, 'Right', 'l') end)
+wezterm.on('ActivatePaneDirection-left', function(window, pane) conditionalActivatePane(window, pane, 'Left', 'h') end)
+wezterm.on('ActivatePaneDirection-up', function(window, pane) conditionalActivatePane(window, pane, 'Up', 'k') end)
+wezterm.on('ActivatePaneDirection-down', function(window, pane) conditionalActivatePane(window, pane, 'Down', 'j') end)
+
+return {
+    keys = {
+        { key = 'h', mods = 'ALT', action = act.EmitEvent 'ActivatePaneDirection-left' },
+        { key = 'j', mods = 'ALT', action = act.EmitEvent 'ActivatePaneDirection-down' },
+        { key = 'k', mods = 'ALT', action = act.EmitEvent 'ActivatePaneDirection-up' },
+        { key = 'l', mods = 'ALT', action = act.EmitEvent 'ActivatePaneDirection-right' }
+    }
+}
 ```
 
 #### Configuration (optional)
@@ -61,6 +117,12 @@ Following options can be given when calling `setup({config})`. Below is the defa
 
     -- Disable navigation when tmux is zoomed in
     disable_on_zoom = false
+
+    -- Which mux program to use outside of neovim
+    -- 'auto' (default)
+    -- 'tmux'
+    -- 'wezterm'
+    mux = "tmux"
 }
 ```
 
