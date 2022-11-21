@@ -9,7 +9,7 @@ local wezterm_directions = {
 }
 
 ---Are we really using wezterm TODO
-T.is_tmux = true
+T.is_running = true
 
 ---Executes a command in wezterm
 ---@param arg string Wezterm command to run

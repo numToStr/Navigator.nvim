@@ -56,7 +56,7 @@ end
 function N.navigate(direction)
     -- For moments when you have this plugin installed
     -- but for some reason you didn't bother to install tmux
-    if not mux.is_tmux then return wincmd(direction) end
+    if not mux.is_running then return wincmd(direction) end
 
     -- window id before navigation
     local cur_win = A.nvim_get_current_win()

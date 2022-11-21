@@ -12,7 +12,7 @@ local tmux_directions = {
 }
 
 ---Are we really using tmux
-T.is_tmux = TMUX ~= nil
+T.is_running = TMUX ~= nil
 
 ---For getting tmux socket
 ---@return string
