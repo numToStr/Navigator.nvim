@@ -8,8 +8,17 @@ local wezterm_directions = {
     j = 'Down'
 }
 
----Are we really using wezterm TODO
-T.is_running = true
+---Implements the check for wezterm existence
+function T.is_running()
+    local handle = io.popen("pstree -sA $$")
+    if handle == nil then return false end
+    local result = handle:read()
+    handle:close()
+    return ((result or ""):find("wezterm")) and true or false
+end
+
+---Are we really using wezterm
+T.is_running = is_wezterm()
 
 ---Executes a command in wezterm
 ---@param arg string Wezterm command to run
