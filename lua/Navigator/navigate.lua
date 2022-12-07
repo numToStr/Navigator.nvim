@@ -5,8 +5,8 @@ local mux_set = { 'tmux', 'wezterm' }
 local mux
 
 ---@class Config
----@field auto_save '"current"'|'"all"' When you want to save the modified buffers when moving to tmux
----@field disable_on_zoom boolean Disable navigation when tmux is zoomed in
+---@field auto_save '"current"'|'"all"' When you want to save the modified buffers when moving to mux
+---@field disable_on_zoom boolean Disable navigation when mux is zoomed in
 
 ---Just some state and defaults
 ---@class Nav
@@ -61,35 +61,35 @@ function N.setup(opts)
     mux = load_mux(N.config['mux'])
 end
 
----Checks whether we need to move to the nearby tmux pane
+---Checks whether we need to move to the nearby mux pane
 ---@param at_edge boolean
 ---@return boolean
-function N.back_to_tmux(at_edge)
+function N.back_to_mux(at_edge)
     if N.config.disable_on_zoom and mux.is_zoomed() then return false end
 
     return N.last_pane or at_edge
 end
 
----For smoothly navigating through neovim splits and tmux panes
+---For smoothly navigating through neovim splits and mux panes
 ---@param direction string
 function N.navigate(direction)
     -- For moments when you have this plugin installed
-    -- but for some reason you didn't bother to install tmux
+    -- but for some reason you didn't bother to install mux
     if not mux.is_running() then return wincmd(direction) end
 
     -- window id before navigation
     local cur_win = A.nvim_get_current_win()
-    local tmux_last_pane = direction == 'p' and N.last_pane
+    local mux_last_pane = direction == 'p' and N.last_pane
 
-    if not tmux_last_pane then wincmd(direction) end
+    if not mux_last_pane then wincmd(direction) end
 
     -- After navigation, if the old window and new window matches
     local at_edge = cur_win == A.nvim_get_current_win()
 
     -- then we can assume that we hit the edge
-    -- there is tmux pane besided the edge
-    -- So we can navigate to the tmux pane
-    if N.back_to_tmux(at_edge) then
+    -- there is mux pane besided the edge
+    -- So we can navigate to the mux pane
+    if N.back_to_mux(at_edge) then
         mux.change_pane(direction)
 
         local save = N.config.auto_save
