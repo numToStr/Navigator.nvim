@@ -1,6 +1,8 @@
-local mux = require('Navigator.tmux')
 local A = vim.api
 local cmd = A.nvim_command
+
+local mux_set = { 'tmux', 'wezterm' }
+local mux
 
 ---@class Config
 ---@field auto_save '"current"'|'"all"' When you want to save the modified buffers when moving to tmux
@@ -19,13 +21,30 @@ local function wincmd(way)
     cmd(('wincmd %s'):format(way))
 end
 
+--Select the correct mux depending on user choice in configuration
+--@param choice string
+local function load_mux(choice)
+    if choice == "auto" then
+        local testing_mux
+        for _, v in ipairs(mux_set) do
+            testing_mux = require('Navigator.' .. v)
+            if testing_mux.is_running() then return testing_mux end
+        end
+    else
+        for _, v in ipairs(mux_set) do
+            if v == choice then return require('Navigator.' .. mux_set[choice]) end
+        end
+    end
+    error("Navigator: Unable to detect mux, please select manually.")
+end
+
 ---For setting up the plugin with the user provided options
 ---@param opts Config
 function N.setup(opts)
     N.config = {
         disable_on_zoom = false,
         auto_save = nil,
-        mux = "tmux",
+        mux = "auto",
     }
 
     if opts ~= nil then
@@ -39,7 +58,7 @@ function N.setup(opts)
         end,
     })
 
-    if N.config['mux'] == "wezterm" then mux = require('Navigator.wezterm') end
+    mux = load_mux(N.config['mux'])
 end
 
 ---Checks whether we need to move to the nearby tmux pane
@@ -56,7 +75,7 @@ end
 function N.navigate(direction)
     -- For moments when you have this plugin installed
     -- but for some reason you didn't bother to install tmux
-    if not mux.is_running then return wincmd(direction) end
+    if not mux.is_running() then return wincmd(direction) end
 
     -- window id before navigation
     local cur_win = A.nvim_get_current_win()

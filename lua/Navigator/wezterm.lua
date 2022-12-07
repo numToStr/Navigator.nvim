@@ -17,9 +17,6 @@ function T.is_running()
     return ((result or ""):find("wezterm")) and true or false
 end
 
----Are we really using wezterm
-T.is_running = is_wezterm()
-
 ---Executes a command in wezterm
 ---@param arg string Wezterm command to run
 ---@return number

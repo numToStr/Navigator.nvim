@@ -11,8 +11,10 @@ local tmux_directions = {
     j = 'D',
 }
 
----Are we really using tmux
-T.is_running = TMUX ~= nil
+---Returns true if tmux is running in current context
+function T.is_running()
+    return TMUX ~= nil
+end
 
 ---For getting tmux socket
 ---@return string
