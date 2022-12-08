@@ -10,11 +10,7 @@ local wezterm_directions = {
 
 ---Implements the check for wezterm existence
 function T.is_running()
-    local handle = io.popen("pstree -sA $$")
-    if handle == nil then return false end
-    local result = handle:read()
-    handle:close()
-    return ((result or ""):find("wezterm")) and true or false
+    return os.getenv('TERM_PROGRAM') == "WezTerm"
 end
 
 ---Executes a command in wezterm
