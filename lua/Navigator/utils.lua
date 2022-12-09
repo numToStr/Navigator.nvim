@@ -19,13 +19,23 @@ function U.load_mux()
     if ok_tmux then
         return tmux
     end
-    local ok_wez, wezterm = pcall(function()
+    local ok_wezterm, wezterm = pcall(function()
         return require('Navigator.mux.wezterm'):new()
     end)
-    if ok_wez then
+    if ok_wezterm then
         return wezterm
     end
     return require('Navigator.mux.vi'):new()
+end
+
+---Returns executable suffix based on platform
+---@return string
+function U.suffix()
+    local uname = vim.loop.os_uname()
+    if string.find(uname.release, 'WSL.*$') or string.find(uname.sysname, '^Win') then
+        return '.exe'
+    end
+    return ''
 end
 
 return U

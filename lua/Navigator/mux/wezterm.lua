@@ -1,6 +1,6 @@
 ---@class WezTerm: Vi
 ---@field private direction table<Direction, string>
----@field private execute fun(arg: string)
+---@field private execute fun(arg: string): unknown
 local WezTerm = require('Navigator.mux.vi'):new()
 
 ---Creates a new WezTerm navigator instance
@@ -8,14 +8,14 @@ local WezTerm = require('Navigator.mux.vi'):new()
 function WezTerm:new()
     assert(os.getenv('TERM_PROGRAM') == 'WezTerm', '[Navigator] WezTerm is not running!')
 
-    local function execute(arg)
-        local exec = string.format('wezterm cli %s', arg)
-        return require('Navigator.utils').execute(exec)
-    end
+    local U = require('Navigator.utils')
+    local suffix = U.suffix()
 
     ---@type WezTerm
     local state = {
-        execute = execute,
+        execute = function(arg)
+            return U.execute(string.format('wezterm%s cli %s', suffix, arg))
+        end,
         direction = { p = 'Prev', h = 'Left', k = 'Up', l = 'Right', j = 'Down' },
     }
     self.__index = self

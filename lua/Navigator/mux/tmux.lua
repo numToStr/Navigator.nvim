@@ -1,8 +1,7 @@
 ---@class Tmux: Vi
----@field private instance string
 ---@field private pane string
 ---@field private direction table<Direction, string>
----@field private execute fun(arg: string)
+---@field private execute fun(arg: string): unknown
 local Tmux = require('Navigator.mux.vi'):new()
 
 ---Creates a new Tmux navigator instance
@@ -14,17 +13,14 @@ function Tmux:new()
     assert(instance and pane, '[Navigator] Tmux is not running!')
 
     local socket = string.match(instance, '(.-),')
-    local cmd = instance:find('tmate') and 'tmate' or 'tmux'
-    local function execute(arg)
-        local exec = string.format('%s -S %s %s', cmd, socket, arg)
-        return require('Navigator.utils').execute(exec)
-    end
+    local exe = instance:find('tmate') and 'tmate' or 'tmux'
 
     ---@type Tmux
     local state = {
-        instance = instance,
         pane = pane,
-        execute = execute,
+        execute = function(arg)
+            return require('Navigator.utils').execute(string.format('%s -S %s %s', exe, socket, arg))
+        end,
         direction = { p = 'l', h = 'L', k = 'U', l = 'R', j = 'D' },
     }
     self.__index = self
