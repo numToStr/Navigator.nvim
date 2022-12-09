@@ -12,14 +12,14 @@ function Tmux:new()
 
     assert(instance and pane, '[Navigator] Tmux is not running!')
 
-    local socket = string.match(instance, '(.-),')
-    local exe = instance:find('tmate') and 'tmate' or 'tmux'
+    local socket = string.match(instance, '^(.-),')
+    local cmd = instance:find('^.*tmate') and 'tmate' or 'tmux'
 
     ---@type Tmux
     local state = {
         pane = pane,
         execute = function(arg)
-            return require('Navigator.utils').execute(string.format('%s -S %s %s', exe, socket, arg))
+            return require('Navigator.utils').execute(string.format('%s -S %s %s', cmd, socket, arg))
         end,
         direction = { p = 'l', h = 'L', k = 'U', l = 'R', j = 'D' },
     }
