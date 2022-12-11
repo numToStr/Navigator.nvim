@@ -28,13 +28,12 @@ function Tmux:new()
 end
 
 ---Checks if tmux is zoomed in
----NOTE: You can return `false`, if mux is not tmux
 ---@return boolean
 function Tmux:zoomed()
     return self.execute("display-message -p '#{window_zoomed_flag}'") == '1'
 end
 
----Execute navigation command
+---Switch pane in tmux
 ---@param direction Direction
 ---@return Tmux
 function Tmux:navigate(direction)

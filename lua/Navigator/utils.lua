@@ -10,24 +10,6 @@ function U.execute(cmd)
     return result
 end
 
----Loads mux
----@return Vi
-function U.load_mux()
-    local ok_tmux, tmux = pcall(function()
-        return require('Navigator.mux.tmux'):new()
-    end)
-    if ok_tmux then
-        return tmux
-    end
-    local ok_wezterm, wezterm = pcall(function()
-        return require('Navigator.mux.wezterm'):new()
-    end)
-    if ok_wezterm then
-        return wezterm
-    end
-    return require('Navigator.mux.vi'):new()
-end
-
 ---Returns executable suffix based on platform
 ---@return string
 function U.suffix()

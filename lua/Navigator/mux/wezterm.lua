@@ -22,7 +22,7 @@ function WezTerm:new()
     return setmetatable(state, self)
 end
 
----Implements the command to switch panes in wezterm
+---Switch pane in wezterm
 ---@param direction Direction
 ---@return WezTerm
 function WezTerm:navigate(direction)

@@ -1,12 +1,30 @@
 local A = vim.api
 local cmd = A.nvim_command
 
+---Loads mux
+---@return Vi
+local function load_mux()
+    local ok_tmux, tmux = pcall(function()
+        return require('Navigator.mux.tmux'):new()
+    end)
+    if ok_tmux then
+        return tmux
+    end
+    local ok_wezterm, wezterm = pcall(function()
+        return require('Navigator.mux.wezterm'):new()
+    end)
+    if ok_wezterm then
+        return wezterm
+    end
+    return require('Navigator.mux.vi'):new()
+end
+
 ---@alias Direction 'p'|'h'|'k'|'l'|'j'
 
 ---@class Config
----@field auto_save? '"current"'|'"all"' When you want to save the modified buffers when moving to mux
----@field disable_on_zoom boolean Disable navigation when mux is zoomed in
----@field mux 'auto'|Vi
+---@field auto_save? '"current"'|'"all"' Save modified buffer(s) when moving to mux
+---@field disable_on_zoom boolean Disable navigation when the current mux pane is zoomed in
+---@field mux 'auto'|Vi Multiplexer to use
 
 ---State and defaults
 ---@class Nav
@@ -33,7 +51,7 @@ function N.setup(opts)
     end
 
     if N.config.mux == 'auto' then
-        N.config.mux = require('Navigator.utils').load_mux()
+        N.config.mux = load_mux()
     end
 
     A.nvim_create_autocmd('WinEnter', {
