@@ -1,34 +1,57 @@
-local tmux = require('Navigator.tmux')
 local A = vim.api
 local cmd = A.nvim_command
 
----@class Config
----@field auto_save '"current"'|'"all"' When you want to save the modified buffers when moving to tmux
----@field disable_on_zoom boolean Disable navigation when tmux is zoomed in
+---Loads mux
+---@return Vi
+local function load_mux()
+    local ok_tmux, tmux = pcall(function()
+        return require('Navigator.mux.tmux'):new()
+    end)
+    if ok_tmux then
+        return tmux
+    end
+    local ok_wezterm, wezterm = pcall(function()
+        return require('Navigator.mux.wezterm'):new()
+    end)
+    if ok_wezterm then
+        return wezterm
+    end
+    return require('Navigator.mux.vi'):new()
+end
 
----Just some state and defaults
+---@alias Direction 'p'|'h'|'k'|'l'|'j'
+
+---@class Config
+---@field auto_save? '"current"'|'"all"' Save modified buffer(s) when moving to mux
+---@field disable_on_zoom boolean Disable navigation when the current mux pane is zoomed in
+---@field mux 'auto'|Vi Multiplexer to use
+
+---State and defaults
 ---@class Nav
 ---@field last_pane boolean
----@field config Config
+---@field config? Config
 local N = {
     last_pane = false,
     config = nil,
 }
 
-local function wincmd(way)
-    cmd(('wincmd %s'):format(way))
-end
-
 ---For setting up the plugin with the user provided options
 ---@param opts Config
 function N.setup(opts)
-    N.config = {
+    local config = {
         disable_on_zoom = false,
         auto_save = nil,
+        mux = 'auto',
     }
 
     if opts ~= nil then
-        N.config = vim.tbl_extend('keep', opts, N.config)
+        N.config = vim.tbl_extend('keep', opts, config)
+    else
+        N.config = config
+    end
+
+    if N.config.mux == 'auto' then
+        N.config.mux = load_mux()
     end
 
     A.nvim_create_autocmd('WinEnter', {
@@ -39,45 +62,37 @@ function N.setup(opts)
     })
 end
 
----Checks whether we need to move to the nearby tmux pane
+---Checks whether we need to move to the nearby mux pane
 ---@param at_edge boolean
 ---@return boolean
-function N.back_to_tmux(at_edge)
-    if N.config.disable_on_zoom and tmux.is_zoomed() then
+function N.back_to_mux(at_edge)
+    if N.config.disable_on_zoom and N.config.mux:zoomed() then
         return false
     end
-
     return N.last_pane or at_edge
 end
 
----For smoothly navigating through neovim splits and tmux panes
+---For smoothly navigating through neovim splits and mux panes
 ---@param direction string
 function N.navigate(direction)
-    -- For moments when you have this plugin installed
-    -- but for some reason you didn't bother to install tmux
-    if not tmux.is_tmux then
-        return wincmd(direction)
-    end
-
     -- window id before navigation
     local cur_win = A.nvim_get_current_win()
-    local tmux_last_pane = direction == 'p' and N.last_pane
 
-    if not tmux_last_pane then
-        wincmd(direction)
+    local mux_last_pane = direction == 'p' and N.last_pane
+    if not mux_last_pane then
+        cmd('wincmd ' .. direction)
     end
 
     -- After navigation, if the old window and new window matches
     local at_edge = cur_win == A.nvim_get_current_win()
 
     -- then we can assume that we hit the edge
-    -- there is tmux pane besided the edge
-    -- So we can navigate to the tmux pane
-    if N.back_to_tmux(at_edge) then
-        tmux.change_pane(direction)
+    -- there is mux pane besided the edge
+    -- So we can navigate to the mux pane
+    if N.back_to_mux(at_edge) then
+        N.config.mux:navigate(direction)
 
         local save = N.config.auto_save
-
         if save == 'current' then
             cmd('update')
         elseif save == 'all' then
