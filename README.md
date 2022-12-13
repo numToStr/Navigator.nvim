@@ -42,8 +42,7 @@ require('Navigator').setup()
 > **Note** - This plugin doesn't provide any keybindings by default, feel free to use (and modify) the following or create your own keybindings.
 
 ```lua
-vim.keymap.set('n', '<A-h>', '<CMD>NavigatorLeft<CR>')
-vim.keymap.set('t', '<A-h>', '<CMD>NavigatorLeft<CR>')
+vim.keymap.set({'n', 't'}, '<A-h>', '<CMD>NavigatorLeft<CR>')
 
 vim.keymap.set('n', '<A-l>', '<CMD>NavigatorRight<CR>')
 vim.keymap.set('t', '<A-l>', '<CMD>NavigatorRight<CR>')
