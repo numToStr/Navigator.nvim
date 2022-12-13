@@ -42,11 +42,11 @@ require('Navigator').setup()
 > **Note** - This plugin doesn't provide any keybindings by default, feel free to use (and modify) the following or create your own keybindings.
 
 ```lua
-vim.keymap.set('n', '<A-h>', '<CMD>NavigatorLeft<CR>')
-vim.keymap.set('n', '<A-l>', '<CMD>NavigatorRight<CR>')
-vim.keymap.set('n', '<A-k>', '<CMD>NavigatorUp<CR>')
-vim.keymap.set('n', '<A-j>', '<CMD>NavigatorDown<CR>')
-vim.keymap.set('n', '<A-p>', '<CMD>NavigatorPrevious<CR>')
+vim.keymap.set({'n', 't'}, '<A-h>', '<CMD>NavigatorLeft<CR>')
+vim.keymap.set({'n', 't'}, '<A-l>', '<CMD>NavigatorRight<CR>')
+vim.keymap.set({'n', 't'}, '<A-k>', '<CMD>NavigatorUp<CR>')
+vim.keymap.set({'n', 't'}, '<A-j>', '<CMD>NavigatorDown<CR>')
+vim.keymap.set({'n', 't'}, '<A-p>', '<CMD>NavigatorPrevious<CR>')
 ```
 
 #### Multiplexer(s)
