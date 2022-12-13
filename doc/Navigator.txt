@@ -1,0 +1,255 @@
+*navigator-nvim.txt*    For Neovim version 0.7           Last change: 2020 Dec 16
+
+
+                |\ |  _.    o  _   _. _|_  _  ._  ._     o ._ _
+                | \| (_| \/ | (_| (_|  |_ (_) | o | | \/ | | | |
+                               _|
+
+              · Smoothly navigate between neovim and multipexers ·
+
+
+================================================================================
+Table of Contents                                           *navigator.contents*
+
+Introduction····················································|navigator-nvim|
+Commands····················································|navigator.commands|
+API and Config···················································|navigator.api|
+Neovim navigator··················································|navigator.vi|
+Tmux navigator··················································|navigator.tmux|
+WezTerm navigator············································|navigator.wezterm|
+
+================================================================================
+Introduction                                                    *navigator-nvim*
+
+Navigator.nvim provides set of functions and commands that allows you to seemlessly
+navigate between neovim and different terminal multiplexers. It also allows you to
+integrate your own custom multipexer.
+
+================================================================================
+Commands                                                    *navigator.commands*
+
+This plugin provides the following commands:
+
+ *NavigatorLeft* - Go to left split/pane
+ *NavigatorRight* - Go to right split/pane
+ *NavigatorUp* - Go to upper split/pane
+ *NavigatorDown* - Go to down split/pane
+ *NavigatorPrevious* - Go to previous split/pane
+
+================================================================================
+API and Config                                                   *navigator.api*
+
+Config                                                    *navigator.api.Config*
+
+    Fields: ~
+        {auto_save?}       ("current"|"all")  Save modified buffer(s) when moving
+                                              to mux from neovim (default: `nil`)
+        {disable_on_zoom}  (boolean)          Disable navigation when the current
+                                              mux pane is zoomed in (default: `false`)
+        {mux}              ("auto"|Vi)        Multiplexer to use (default: "auto")
+
+
+Direction                                              *navigator.api.Direction*
+    Enum of navigation direction analogous of neovim window movement
+
+    Variants: ~
+        ("p")  Previous Pane
+        ("h")  Left Pane
+        ("j")  Lower Pane
+        ("k")  Upper Pane
+        ("l")  Right Pane
+
+
+Nav.setup({opts})                                          *navigator.api.setup*
+    Configure the plugin
+
+    Parameters: ~
+        {opts}  (Config)
+
+    Usage: ~
+        >
+            -- With default config
+            require('Navigator').setup()
+
+            -- With custom config
+            require('Navigator').setup({
+                auto_save = 'current'
+                disable_on_zoom = true
+            })
+        <
+
+
+Nav.left()                                                  *navigator.api.left*
+    Go to left split/pane
+
+    Usage: ~
+        >
+            require('Navigator').left()
+
+            -- With keybinding
+            vim.keymap.set({'n', 't'}, '<A-h>', require('Navigator').left)
+        <
+
+
+Nav.up()                                                      *navigator.api.up*
+    Go to upper split/pane
+
+    Usage: ~
+        >
+            require('Navigator').up()
+
+            -- With keybinding
+            vim.keymap.set({'n', 't'}, '<A-k>', require('Navigator').up)
+        <
+
+
+Nav.right()                                                *navigator.api.right*
+    Go to right split/pane
+
+    Usage: ~
+        >
+            require('Navigator').right()
+
+            -- With keybinding
+            vim.keymap.set({'n', 't'}, '<A-l>', require('Navigator').right)
+        <
+
+
+Nav.down()                                                  *navigator.api.down*
+    Go to down split/pane
+
+    Usage: ~
+        >
+            require('Navigator').down()
+
+            -- With keybinding
+            vim.keymap.set({'n', 't'}, '<A-j>', require('Navigator').down)
+        <
+
+
+Nav.previous()                                          *navigator.api.previous*
+    Go to previous split/pane
+
+    Usage: ~
+        >
+            require('Navigator').previous()
+
+            -- With keybinding
+            vim.keymap.set({'n', 't'}, '<A-p>', require('Navigator').previous)
+        <
+
+
+================================================================================
+Neovim navigator                                                  *navigator.vi*
+
+This module provides navigation and interaction for Neovim. This also acts
+as a base class for other multiplexer implementation.
+
+Read: https://github.com/numToStr/Navigator.nvim/wiki/Custom-Multiplexer
+
+Vi:new()                                                      *navigator.vi:new*
+    Creates new Neovim navigator instance
+
+    Returns: ~
+        (Vi)
+
+
+Vi.zoomed()                                                *navigator.vi.zoomed*
+    Checks whether neovim is maximized
+    NOTE: For neovim, this always returns `false`.
+
+    Returns: ~
+        (boolean)
+
+
+Vi:navigate({direction})                                 *navigator.vi:navigate*
+    Navigate inside neovim
+
+    Parameters: ~
+        {direction}  (Direction)  See |navigator.api.Direction|
+
+    Returns: ~
+        (Vi)
+
+
+================================================================================
+Tmux navigator                                                  *navigator.tmux*
+
+This module provides navigation and interaction for Tmux, and uses |navigator.vi|
+as a base class. This is used automatically when tmux is detected on host
+system but can also be used to manually override the mux.
+Read also: https://github.com/numToStr/Navigator.nvim/wiki/Tmux-Integration
+
+Tmux:new()                                                  *navigator.tmux:new*
+    Creates a new Tmux navigator instance
+
+    Returns: ~
+        (Tmux)
+
+    Usage: ~
+        >
+            local ok, tmux = pcall(function()
+                return require('Navigator.mux.tmux'):new()
+            end)
+
+            require('Navigator').setup({
+                mux = ok and tmux or 'auto'
+            })
+        <
+
+
+Tmux:zoomed()                                            *navigator.tmux:zoomed*
+    Checks if tmux is zoomed in
+
+    Returns: ~
+        (boolean)
+
+
+Tmux:navigate({direction})                             *navigator.tmux:navigate*
+    Switch pane in tmux
+
+    Parameters: ~
+        {direction}  (Direction)  See |navigator.api.Direction|
+
+    Returns: ~
+        (Tmux)
+
+
+================================================================================
+WezTerm navigator                                            *navigator.wezterm*
+
+This module provides navigation and interaction for WezTerm, and uses |navigator.vi|
+as a base class. This is used automatically when wezterm is detected on host system
+but can also be used to manually override the mux.
+
+Read also: https://github.com/numToStr/Navigator.nvim/wiki/WezTerm-Integration
+
+WezTerm:new()                                            *navigator.wezterm:new*
+    Creates a new WezTerm navigator instance
+
+    Returns: ~
+        (WezTerm)
+
+    Usage: ~
+        >
+            local ok, wezterm = pcall(function()
+                return require('Navigator.mux.wezterm'):new()
+            end)
+
+            require('Navigator').setup({
+                mux = ok and wezterm or 'auto'
+            })
+        <
+
+
+WezTerm:navigate({direction})                       *navigator.wezterm:navigate*
+    Switch pane in wezterm
+
+    Parameters: ~
+        {direction}  (Direction)  See |navigator.api.Direction|
+
+    Returns: ~
+        (WezTerm)
+
+
+vim:tw=78:ts=8:noet:ft=help:norl:
