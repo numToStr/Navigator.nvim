@@ -3,7 +3,7 @@
 
 ![Navigator](https://user-images.githubusercontent.com/24727447/157040356-1f44323a-c7b6-4955-8207-5e6cade08c9e.gif "Navigating to the moon")
 
-This plugin provides a set of [functions](#lua-api) and [commands](#commands) that allows you to seemlessly navigate between neovim and different [terminal multiplexers](#multiplexers).
+`Navigator.nvim` provides set of [functions](#lua-api) and [commands](#commands) that allows you to seemlessly navigate between neovim and different [terminal multiplexers](#multiplexers).
 
 ### 🚀 Installation
 
@@ -54,7 +54,7 @@ vim.keymap.set('n', '<A-p>', '<CMD>NavigatorPrevious<CR>')
 > **Note** - This plugin doesn't provide any configuration for multiplexers, feel free to use (and modify) the snippet for multiplexer of your choice by following the links below.
 
 - [Tmux](https://github.com/numToStr/Navigator.nvim/wiki/Tmux-Integration)
-- [Wezterm](https://github.com/numToStr/Navigator.nvim/wiki/WezTerm-Integration)
+- [WezTerm](https://github.com/numToStr/Navigator.nvim/wiki/WezTerm-Integration)
 
 #### Configuration (optional)
 
@@ -90,6 +90,8 @@ Following options can be given when calling `setup({config})`. Below is the defa
 - `NavigatorDown` - Go to down split/pane
 - `NavigatorPrevious` - Go to previous split/pane
 
+> Read `:h navigator.commands` for more info
+
 #### Lua API
 
 ```lua
@@ -99,6 +101,8 @@ require('Navigator').up()
 require('Navigator').down()
 require('Navigator').previous()
 ```
+
+> Read `:h navigator.api` for more info
 
 ### 💐 Credits
 

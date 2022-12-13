@@ -1,7 +1,16 @@
 local A = vim.api
 local cmd = A.nvim_command
 
----Loads mux
+---State and defaults
+---@class Nav
+---@field last_pane boolean
+---@field config? Config
+local N = {
+    last_pane = false,
+    config = nil,
+}
+
+---Detect and load correct mux
 ---@return Vi
 local function load_mux()
     local ok_tmux, tmux = pcall(function()
@@ -19,25 +28,10 @@ local function load_mux()
     return require('Navigator.mux.vi'):new()
 end
 
----@alias Direction 'p'|'h'|'k'|'l'|'j'
-
----@class Config
----@field auto_save? '"current"'|'"all"' Save modified buffer(s) when moving to mux
----@field disable_on_zoom boolean Disable navigation when the current mux pane is zoomed in
----@field mux 'auto'|Vi Multiplexer to use
-
----State and defaults
----@class Nav
----@field last_pane boolean
----@field config? Config
-local N = {
-    last_pane = false,
-    config = nil,
-}
-
 ---For setting up the plugin with the user provided options
 ---@param opts Config
 function N.setup(opts)
+    ---@type Config
     local config = {
         disable_on_zoom = false,
         auto_save = nil,
@@ -65,7 +59,7 @@ end
 ---Checks whether we need to move to the nearby mux pane
 ---@param at_edge boolean
 ---@return boolean
-function N.back_to_mux(at_edge)
+local function back_to_mux(at_edge)
     if N.config.disable_on_zoom and N.config.mux:zoomed() then
         return false
     end
@@ -89,7 +83,7 @@ function N.navigate(direction)
     -- then we can assume that we hit the edge
     -- there is mux pane besided the edge
     -- So we can navigate to the mux pane
-    if N.back_to_mux(at_edge) then
+    if back_to_mux(at_edge) then
         N.config.mux:navigate(direction)
 
         local save = N.config.auto_save

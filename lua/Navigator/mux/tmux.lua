@@ -1,3 +1,12 @@
+---@mod navigator.tmux Tmux navigator
+---@brief [[
+---This module provides navigation and interaction for Tmux, and uses |navigator.vi|
+---as a base class. This is used automatically when tmux is detected on host
+---system but can also be used to manually override the mux.
+---Read also: https://github.com/numToStr/Navigator.nvim/wiki/Tmux-Integration
+---@brief ]]
+
+---@private
 ---@class Tmux: Vi
 ---@field private pane string
 ---@field private direction table<Direction, string>
@@ -6,6 +15,15 @@ local Tmux = require('Navigator.mux.vi'):new()
 
 ---Creates a new Tmux navigator instance
 ---@return Tmux
+---@usage [[
+---local ok, tmux = pcall(function()
+---    return require('Navigator.mux.tmux'):new()
+---end)
+---
+---require('Navigator').setup({
+---    mux = ok and tmux or 'auto'
+---})
+---@usage ]]
 function Tmux:new()
     local instance = os.getenv('TMUX')
     local pane = os.getenv('TMUX_PANE')
@@ -34,7 +52,7 @@ function Tmux:zoomed()
 end
 
 ---Switch pane in tmux
----@param direction Direction
+---@param direction Direction See |navigator.api.Direction|
 ---@return Tmux
 function Tmux:navigate(direction)
     self.execute(string.format("select-pane -t '%s' -%s", self.pane, self.direction[direction]))
