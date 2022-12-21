@@ -69,7 +69,7 @@ Following options can be given when calling `setup({config})`. Below is the defa
     auto_save = nil,
 
     -- Disable navigation when the current mux pane is zoomed in
-    disable_on_zoom = false
+    disable_on_zoom = false,
 
     -- Multiplexer to use
     -- 'auto' - Chooses mux based on priority (default)
