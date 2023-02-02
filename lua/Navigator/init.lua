@@ -6,7 +6,7 @@
 ---                | \| (_| \/ | (_| (_|  |_ (_) | o | | \/ | | | |
 ---                               _|
 ---
----              · Smoothly navigate between neovim and multipexers ·
+---             · Smoothly navigate between neovim and multiplexer(s) ·
 ---
 ---@brief ]]
 
@@ -14,9 +14,9 @@
 
 ---@mod navigator-nvim Introduction
 ---@brief [[
----Navigator.nvim provides set of functions and commands that allows you to seemlessly
+---Navigator.nvim provides set of functions and commands that allows you to seamlessly
 ---navigate between neovim and different terminal multiplexers. It also allows you to
----integrate your own custom multipexer.
+---integrate your own custom multiplexer.
 ---@brief ]]
 
 ---@mod navigator.commands Commands

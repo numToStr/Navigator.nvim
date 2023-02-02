@@ -19,8 +19,7 @@ function Vi:new()
 end
 
 ---Checks whether neovim is maximized
----NOTE: For neovim, this always returns `false`.
----@return boolean
+---@return boolean #For neovim, it'll always returns `false`
 function Vi.zoomed()
     return false
 end

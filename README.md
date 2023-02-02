@@ -1,9 +1,9 @@
 <h1 align='center'>Navigator.nvim</h1>
-<p align="center"><sup>✨ Smoothly navigate between neovim and multiplexer ✨</sup></p>
+<p align="center"><sup>✨ Smoothly navigate between neovim and multiplexer(s) ✨</sup></p>
 
 ![Navigator](https://user-images.githubusercontent.com/24727447/157040356-1f44323a-c7b6-4955-8207-5e6cade08c9e.gif "Navigating to the moon")
 
-`Navigator.nvim` provides set of [functions](#lua-api) and [commands](#commands) that allows you to seemlessly navigate between neovim and different [terminal multiplexers](#multiplexers).
+`Navigator.nvim` provides set of [functions](#lua-api) and [commands](#commands) that allows you to seamlessly navigate between neovim and different [terminal multiplexers](#multiplexers).
 
 ### 🚀 Installation
 
