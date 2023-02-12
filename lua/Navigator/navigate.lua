@@ -88,9 +88,11 @@ function N.navigate(direction)
 
         local save = N.config.auto_save
         if save == 'current' then
-            cmd('update')
+            if vim.fn.expand('%') ~= '' then
+              cmd('update')
+            end
         elseif save == 'all' then
-            cmd('wall')
+            cmd('silent! wall')
         end
 
         N.last_pane = true
