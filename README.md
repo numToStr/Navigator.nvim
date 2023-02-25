@@ -55,6 +55,7 @@ vim.keymap.set({'n', 't'}, '<A-p>', '<CMD>NavigatorPrevious<CR>')
 
 - [Tmux](https://github.com/numToStr/Navigator.nvim/wiki/Tmux-Integration)
 - [WezTerm](https://github.com/numToStr/Navigator.nvim/wiki/WezTerm-Integration)
+- [Kitty](https://github.com/numToStr/Navigator.nvim/wiki/Kitty-Integration)
 
 #### Configuration (optional)
 
