@@ -19,12 +19,21 @@ local function load_mux()
     if ok_tmux then
         return tmux
     end
+
+    local ok_zellij, zellij = pcall(function()
+        return require('Navigator.mux.zellij'):new()
+    end)
+    if ok_zellij then
+        return zellij
+    end
+
     local ok_wezterm, wezterm = pcall(function()
         return require('Navigator.mux.wezterm'):new()
     end)
     if ok_wezterm then
         return wezterm
     end
+
     return require('Navigator.mux.vi'):new()
 end
 
