@@ -13,18 +13,27 @@ local N = {
 ---Detect and load correct mux
 ---@return Vi
 local function load_mux()
+    local ok_zellij, zellij = pcall(function()
+        return require('Navigator.mux.zellij'):new()
+    end)
+    if ok_zellij then
+        return zellij
+    end
+
     local ok_tmux, tmux = pcall(function()
         return require('Navigator.mux.tmux'):new()
     end)
     if ok_tmux then
         return tmux
     end
+
     local ok_wezterm, wezterm = pcall(function()
         return require('Navigator.mux.wezterm'):new()
     end)
     if ok_wezterm then
         return wezterm
     end
+
     return require('Navigator.mux.vi'):new()
 end
 
