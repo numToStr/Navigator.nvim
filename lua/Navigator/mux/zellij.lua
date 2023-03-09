@@ -3,7 +3,6 @@
 ---This module provides navigation and interaction for Zellij, and uses |navigator.vi|
 ---as a base class. This is used automatically when zellij is detected on host system
 ---but can also be used to manually override the mux.
----
 ---@brief ]]
 
 ---@private
