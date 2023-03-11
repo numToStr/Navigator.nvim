@@ -45,7 +45,7 @@ end
 ---@param direction Direction See |navigator.api.Direction|
 ---@return Kitty
 function Kitty:navigate(direction)
-    self.execute(string.format('kitten neighboring_window.py %s', self.direction[direction]))
+    self.execute(string.format('kitten navigator.py %s', self.direction[direction]))
     return self
 end
 
