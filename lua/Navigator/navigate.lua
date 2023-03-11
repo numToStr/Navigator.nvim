@@ -25,6 +25,12 @@ local function load_mux()
     if ok_wezterm then
         return wezterm
     end
+    local ok_kitty, kitty = pcall(function()
+        return require('Navigator.mux.kitty'):new()
+    end)
+    if ok_kitty then
+        return kitty
+    end
     return require('Navigator.mux.vi'):new()
 end
 
