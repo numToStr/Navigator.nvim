@@ -41,6 +41,22 @@ function WezTerm:new()
     return setmetatable(state, self)
 end
 
+---Checks if wezterm is zoomed in
+---@return boolean
+function WezTerm:zoomed()
+    local ok, panes = pcall(vim.json.decode, self.execute('list --format json'))
+    if not ok then
+      return false
+    end
+    local active_pane_id = tonumber(os.getenv('WEZTERM_PANE'))
+    for _, pane in ipairs(panes) do
+      if pane.pane_id == active_pane_id then
+        return pane.is_zoomed
+      end
+    end
+    return false
+end
+
 ---Switch pane in wezterm
 ---@param direction Direction See |navigator.api.Direction|
 ---@return WezTerm
