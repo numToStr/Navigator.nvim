@@ -125,7 +125,7 @@ function N.resize(direction)
     -- there is mux pane besided the edge
     -- So we can navigate to the mux pane
     if at_edge then
-      print("at edge")
+      N.config.mux:size(direction)
     end
 end
 

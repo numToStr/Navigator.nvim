@@ -49,4 +49,12 @@ function WezTerm:navigate(direction)
     return self
 end
 
+---Resize pane in wezterm
+---@param direction Direction See |navigator.api.Direction|
+---@return WezTerm
+function WezTerm:size(direction)
+    self.execute(string.format('adjust-pane-size %s', self.direction[direction]))
+    return self
+end
+
 return WezTerm
