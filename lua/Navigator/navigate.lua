@@ -116,6 +116,8 @@ function N.resize(direction)
       elseif direction == 'j' then
         cmd('resize +2')
       end
+      -- No need to do anything more
+      return
     end
 
     -- After navigation, if the old window and new window matches
