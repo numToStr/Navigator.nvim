@@ -116,7 +116,8 @@ function N.resize(direction)
       elseif direction == 'j' then
         cmd('resize +2')
       end
-      -- No need to do anything more
+      -- If we only want to resize inside vim
+      -- then we don't need to do anything in mux
       return
     end
 
