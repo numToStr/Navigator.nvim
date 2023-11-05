@@ -99,4 +99,34 @@ function N.navigate(direction)
     end
 end
 
+---For smoothly resizing neovim splits and mux panes
+---@param direction string
+function N.resize(direction)
+    -- window id before navigation
+    local cur_win = A.nvim_get_current_win()
+
+    local mux_last_pane = direction == 'p' and N.last_pane
+    if not mux_last_pane then
+      if direction == 'h' then
+        cmd('vertical resize -2')
+      elseif direction == 'l' then
+        cmd('vertical resize +2')
+      elseif direction == 'k' then
+        cmd('resize -2')
+      elseif direction == 'j' then
+        cmd('resize +2')
+      end
+    end
+
+    -- After navigation, if the old window and new window matches
+    local at_edge = cur_win == A.nvim_get_current_win()
+
+    -- then we can assume that we hit the edge
+    -- there is mux pane besided the edge
+    -- So we can navigate to the mux pane
+    if at_edge then
+      print("at edge")
+    end
+end
+
 return N
