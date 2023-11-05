@@ -75,7 +75,7 @@ end
 ---vim.keymap.set({'n', 't'}, '<A-h>', require('Navigator').left)
 ---@usage ]]
 function Nav.left()
-    n.navigate('left')
+    n.navigate('h')
 end
 
 ---Go to upper split/pane
@@ -86,7 +86,7 @@ end
 ---vim.keymap.set({'n', 't'}, '<A-k>', require('Navigator').up)
 ---@usage ]]
 function Nav.up()
-    n.navigate('up')
+    n.navigate('k')
 end
 
 ---Go to right split/pane
@@ -97,7 +97,7 @@ end
 ---vim.keymap.set({'n', 't'}, '<A-l>', require('Navigator').right)
 ---@usage ]]
 function Nav.right()
-    n.navigate('right')
+    n.navigate('l')
 end
 
 ---Go to down split/pane
@@ -108,7 +108,7 @@ end
 ---vim.keymap.set({'n', 't'}, '<A-j>', require('Navigator').down)
 ---@usage ]]
 function Nav.down()
-    n.navigate('down')
+    n.navigate('j')
 end
 
 ---Go to previous split/pane
