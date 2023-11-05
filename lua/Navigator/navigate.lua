@@ -105,7 +105,7 @@ function N.resize(direction)
     -- window id before navigation
     local cur_win = A.nvim_get_current_win()
 
-    local mux_last_pane = direction == 'p' and N.last_pane
+    local mux_last_pane = N.last_pane
     if not mux_last_pane then
       if direction == 'h' then
         cmd('vertical resize -2')
@@ -124,7 +124,7 @@ function N.resize(direction)
     -- then we can assume that we hit the edge
     -- there is mux pane besided the edge
     -- So we can navigate to the mux pane
-    if at_edge then
+    if back_to_mux(at_edge) then
       N.config.mux:size(direction)
     end
 end
