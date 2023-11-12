@@ -122,4 +122,47 @@ function Nav.previous()
     n.navigate('p')
 end
 
+---Resize down split/pane
+---@usage [[
+---require('Navigator').size_down()
+---
+----- With keybinding
+---vim.keymap.set({'n', 't'}, '<A-j>', require('Navigator').size_down)
+---@usage ]]
+function Nav.size_down()
+    n.resize('j')
+end
+
+---Resize up split/pane
+---@usage [[
+---require('Navigator').size_up()
+---
+----- With keybinding
+---vim.keymap.set({'n', 't'}, '<A-k>', require('Navigator').size_up)
+---@usage ]]
+function Nav.size_up()
+    n.resize('k')
+end
+
+---Resize left split/pane
+---@usage [[
+---require('Navigator').size_left()
+---
+----- With keybinding
+---vim.keymap.set({'n', 't'}, '<A-h>', require('Navigator').size_left)
+---@usage ]]
+function Nav.size_left()
+    n.resize('h')
+end
+
+---Resize right split/pane
+---@usage [[
+---require('Navigator').size_right()
+---
+----- With keybinding
+---vim.keymap.set({'n', 't'}, '<A-l>', require('Navigator').size_right)
+---@usage ]]
+function Nav.size_right()
+    n.resize('l')
+end
 return Nav
