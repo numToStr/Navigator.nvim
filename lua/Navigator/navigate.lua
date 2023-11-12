@@ -108,13 +108,13 @@ function N.resize(direction)
     local mux_last_pane = N.last_pane
     if not mux_last_pane then
       if direction == 'h' then
-        cmd('vertical resize -2')
+        cmd('vertical resize -8')
       elseif direction == 'l' then
-        cmd('vertical resize +2')
+        cmd('vertical resize +8')
       elseif direction == 'k' then
-        cmd('resize -2')
+        cmd('resize -8')
       elseif direction == 'j' then
-        cmd('resize +2')
+        cmd('resize +8')
       end
       -- If we only want to resize inside vim
       -- then we don't need to do anything in mux
