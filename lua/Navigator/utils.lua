@@ -4,7 +4,7 @@ local U = {}
 ---@param cmd string
 ---@return unknown
 function U.execute(cmd)
-    local handle = assert(io.popen(cmd), string.format('[Navigator] Unable to execute cmd - %q', cmd))
+    local handle = assert(io.popen(cmd .. " 2>&1"), string.format('[Navigator] Unable to execute cmd - %q', cmd))
     local result = handle:read()
     handle:close()
     return result
