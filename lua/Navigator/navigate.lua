@@ -66,6 +66,16 @@ local function back_to_mux(at_edge)
     return N.last_pane or at_edge
 end
 
+---Checks whether is command-line window
+---@return boolean
+local function is_command_line_window()
+    local window_type = vim.fn.getcmdwintype()
+    if window_type == ':' then
+        return true
+    end
+    return false
+end
+
 ---For smoothly navigating through neovim splits and mux panes
 ---@param direction string
 function N.navigate(direction)
@@ -74,7 +84,11 @@ function N.navigate(direction)
 
     local mux_last_pane = direction == 'p' and N.last_pane
     if not mux_last_pane then
-        cmd('wincmd ' .. direction)
+        if is_command_line_window() then
+            print('Vim(wincmd):E11: Invalid in command-line window; <CR> executes, CTRL-C quits')
+        else
+            cmd('wincmd ' .. direction)
+        end
     end
 
     -- After navigation, if the old window and new window matches
