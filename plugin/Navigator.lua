@@ -7,8 +7,3 @@ ucmd('NavigatorRight', N.right, {})
 ucmd('NavigatorUp', N.up, {})
 ucmd('NavigatorDown', N.down, {})
 ucmd('NavigatorPrevious', N.previous, {})
-
-ucmd('NavigatorSizeLeft', N.size_left, {})
-ucmd('NavigatorSizeRight', N.size_right, {})
-ucmd('NavigatorSizeUp', N.size_up, {})
-ucmd('NavigatorSizeDown', N.size_down, {})

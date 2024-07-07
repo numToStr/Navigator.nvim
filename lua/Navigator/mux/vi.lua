@@ -32,11 +32,4 @@ function Vi:navigate(direction)
     return self
 end
 
----Navigate inside neovim
----@param direction Direction See |navigator.api.Direction|
----@return Vi
-function Vi:size(direction)
-    cmd('resize ' .. direction)
-    return self
-end
 return Vi
