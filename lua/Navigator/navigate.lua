@@ -105,20 +105,20 @@ function N.resize(direction)
     -- window id before navigation
     local bef_win = A.nvim_get_current_win()
 
-    if not mux_last_pane then
-      if direction == 'h' then
-        cmd('vertical resize -8')
-      elseif direction == 'l' then
-        cmd('vertical resize +8')
-      elseif direction == 'k' then
-        cmd('resize -8')
-      elseif direction == 'j' then
-        cmd('resize +8')
-      end
     if N.last_pane then
         return
     end
 
+    local resize_map = {
+        h = 'vertical resize -8',
+        l = 'vertical resize +8',
+        k = 'resize -8',
+        j = 'resize -8',
+    }
+
+    if resize_map[direction] then
+        cmd(resize_map[direction])
+    end
     -- After navigation, if the old window and new window matches
     local at_edge = bef_win == A.nvim_get_current_win()
 
