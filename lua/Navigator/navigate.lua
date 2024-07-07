@@ -105,7 +105,6 @@ function N.resize(direction)
     -- window id before navigation
     local bef_win = A.nvim_get_current_win()
 
-    local mux_last_pane = N.last_pane
     if not mux_last_pane then
       if direction == 'h' then
         cmd('vertical resize -8')
@@ -116,9 +115,8 @@ function N.resize(direction)
       elseif direction == 'j' then
         cmd('resize +8')
       end
-      -- If we only want to resize inside vim
-      -- then we don't need to do anything in mux
-      return
+    if N.last_pane then
+        return
     end
 
     -- After navigation, if the old window and new window matches
