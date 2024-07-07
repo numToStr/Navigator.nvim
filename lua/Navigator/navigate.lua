@@ -103,7 +103,7 @@ end
 ---@param direction string
 function N.resize(direction)
     -- window id before navigation
-    local cur_win = A.nvim_get_current_win()
+    local bef_win = A.nvim_get_current_win()
 
     local mux_last_pane = N.last_pane
     if not mux_last_pane then
@@ -122,7 +122,7 @@ function N.resize(direction)
     end
 
     -- After navigation, if the old window and new window matches
-    local at_edge = cur_win == A.nvim_get_current_win()
+    local at_edge = bef_win == A.nvim_get_current_win()
 
     -- then we can assume that we hit the edge
     -- there is mux pane besided the edge
