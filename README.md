@@ -29,6 +29,20 @@ Plug 'numToStr/Navigator.nvim'
 lua require('Navigator').setup()
 ```
 
+- With [lazy.nvim](https://github.com/folke/lazy.nvim)
+
+```lua
+{
+    "numToStr/Navigator.nvim",
+    config = function()
+        require("Navigator").setup()
+    end
+    # keys = {
+    #     { "<A-h>", "<CMD>NavigatorLeft<CR>", mode = { "n", "t" } },
+    # ...
+}
+```
+
 ### ⚒️ Setup
 
 #### Neovim
